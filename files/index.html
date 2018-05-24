@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="utf-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+ <title><?lua return(tostring(apName)) ?></title>
+ <link rel="stylesheet" href="style.css.gz" />
+ <!--		<link href="nodemcu-css.css" rel="stylesheet">-->
+ <style>
+  .sideopen a {
+    cursor: pointer;
+}
+ </style>
+</head>
+
+<body>
+<div id="loader" class="loader hide"></div>
+ <div id="sideNav" class="sidenav">
+  <span href="javascript:void(0)" class="close" onclick="document.getElementById('sideNav').classList.toggle('open');">&times;</span>
+  <div class="in"></div>
+  <a href="settings.html">settings</a>
+  <a href="info.html">info</a>
+ </div>
+ <div class="sideopen warning"><a onclick="document.getElementById('sideNav').classList.toggle('open');">&equiv;</a></div>
+ <ul class="nav fix warning" id="topNav">
+  <li><a href="#" class="brand"><?lua return(tostring(apName)) ?></a></li>
+ </ul>
+ <div id="Modal" class="modal hide">
+  <div class="m-cont">
+   <span class="close" id="close_m">&times;</span>
+   <div class="m-body">
+    <p>Save settings?</p>
+   </div>
+   <div class="m-foo">
+    <button id="save_m" class="success">Yes</button>
+    <button id="close" class="danger">No</button>
+   </div>
+  </div>
+ </div>
+ <div class="cont">
+  <div class="row">
+   <div class="s12 m2 l2">
+
+   </div>
+   <div class="s12 m10 l9 ">
+    <div id="modules" class="row">
+    <div class="s12">
+	<table>
+   <thead>
+    <tr>
+     <th>sensor</th>
+     <th><?lua if bmx280.mode == 1 then return("bmp280") elseif bmx280.mode == 2 then return("bme280") else return("no device") end ?></th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr>
+     <td>temperature</td>
+     <td><?lua return(bmx280.temp) ?>&nbspC</td>
+    </tr>
+    <tr>
+     <td>pressure</td>
+     <td><?lua return(bmx280.pres) ?>&nbspmm Hg</td>
+    </tr>
+    <tr>
+     <td>humidity</td>
+     <td><?lua return(bmx280.humi) ?>&nbsp%</td>
+    </tr>
+
+   </tbody>
+  </table>
+    </div>
+    </div>
+   </div>
+  </div>
+ </div>
+ <script>
+  function send(page, data, callback) {
+   var req = new XMLHttpRequest();
+   req.open("POST", page, true);
+   req.setRequestHeader('Content-Type', 'application/json');
+   req.addEventListener("load", function() {
+    if (req.status < 400) {
+     callback(req.responseText);
+    } else {
+     callback(false);
+    }
+   });
+   req.send(JSON.stringify(data));
+  }
+  function logout() {
+   document.cookie = "id=";
+   location.href = '/login.html';
+  }
+ </script>
+</body>
+
+</html>
