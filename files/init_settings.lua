@@ -1,5 +1,5 @@
 --local apNamePrefix = "ESP"
-apName = "ESP-" .. string.sub(wifi.ap.getmac(),10):gsub(":",""):upper()
+apName = "NODE-" .. string.sub(wifi.ap.getmac(),10):gsub(":",""):upper()
 espinfo = {}
 espinfo.majorVer, espinfo.minorVer, espinfo.devVer, espinfo.chipid, espinfo.flashid = node.info()
 local function def(v)
